@@ -1,0 +1,12 @@
+{
+  "list": [
+    {
+      "name": "my-list",
+      "id": 1
+    },
+    {
+      "name": "NestJS Course",
+      "id": 2
+    }
+  ]
+}

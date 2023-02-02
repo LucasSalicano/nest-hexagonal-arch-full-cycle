@@ -6,4 +6,6 @@ export interface ListGatewayInterface {
   findAll(): Promise<List[]>;
 
   findById(id: number): Promise<List>;
+
+  remove(id: number): Promise<void>;
 }

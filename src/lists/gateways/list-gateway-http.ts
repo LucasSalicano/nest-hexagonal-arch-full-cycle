@@ -21,11 +21,15 @@ export class ListGatewayHttp implements ListGatewayInterface {
 
   async findAll(): Promise<List[]> {
     const { data } = await lastValueFrom(this.httpService.get<any[]>('lists'));
-    return data.map((list) => new List(list.name));
+    return data.map(list => new List(list.name));
   }
 
   async findById(id: number): Promise<List> {
     const { data } = await lastValueFrom(this.httpService.get(`lists/${id}`));
     return new List(data.name, data.id);
+  }
+
+  async remove(id: number): Promise<void> {
+    await lastValueFrom(this.httpService.delete(`lists/${id}`));
   }
 }

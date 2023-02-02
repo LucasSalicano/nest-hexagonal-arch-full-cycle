@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 import { HttpService } from '@nestjs/axios';
@@ -6,6 +6,7 @@ import List from './entities/list.entity';
 import { ListGatewayInterface } from './gateways/list-gateway-interface';
 import { EventEmitter } from 'events';
 import { ListCreatedEvent } from './events/list-created.event';
+import { ListRemovedEvent } from './events/list-removed.event';
 
 @Injectable()
 export class ListsService {
@@ -37,7 +38,8 @@ export class ListsService {
     return `This action updates a #${id} list`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async remove(id: number) {
+    await this.listPersistenceGateway.remove(id);
+    this.eventEmitter.emit('list.removed', new ListRemovedEvent(id));
   }
 }

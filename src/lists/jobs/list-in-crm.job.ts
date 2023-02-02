@@ -10,7 +10,7 @@ import { Inject } from '@nestjs/common';
 import { Error } from 'sequelize';
 
 @Processor()
-export default class CreateListInCrmJob {
+export default class ListInCrmJob {
   constructor(
     @Inject('ListIntegrationGateway')
     private listIntegrationGateway: ListGatewayInterface,
@@ -20,6 +20,13 @@ export default class CreateListInCrmJob {
     console.log('process event...');
     const event = job.data;
     await this.listIntegrationGateway.create(event.list);
+  }
+
+  @Process('list.removed')
+  async removeList(job: Job) {
+    console.log('process removed event...');
+    const event = job.data;
+    await this.listIntegrationGateway.remove(event.id);
   }
 
   @OnQueueFailed({ name: 'list.created' })

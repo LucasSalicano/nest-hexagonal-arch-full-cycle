@@ -1,7 +1,7 @@
 import { Queue } from 'bull';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { InjectQueue } from '@nestjs/bull';
+import { InjectQueue, OnQueueCompleted } from '@nestjs/bull';
 import { ListCreatedEvent } from '../events/list-created.event';
 
 @Injectable()

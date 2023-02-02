@@ -1,15 +1,16 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ListsService } from './lists.service';
-import { ListsController } from './lists.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ListModel } from './entities/list.model';
-import { HttpModule } from '@nestjs/axios';
-import { ListGatewaySequelize } from './gateways/list-gateway-sequelize';
 import { ListGatewayHttp } from './gateways/list-gateway-http';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ListGatewaySequelize } from './gateways/list-gateway-sequelize';
+import { ListsController } from './lists.controller';
+import { ListsService } from './lists.service';
+// import { CreateListInCrmListener } from './listeners/create-list-in-crm.listener';
 import { BullModule } from '@nestjs/bull';
-import CreateListInCrmJob from './jobs/create-list-in-crm.job';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PublishListCreatedListener } from './listeners/publish-list-created.listener';
+import CreateListInCrmJob from './jobs/create-list-in-crm.job';
 
 @Module({
   imports: [
@@ -19,7 +20,13 @@ import { PublishListCreatedListener } from './listeners/publish-list-created.lis
     }),
     BullModule.registerQueue({
       name: 'default',
-      defaultJobOptions: { attempts: 1 },
+      defaultJobOptions: {
+        attempts: 5,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      },
     }),
   ],
   controllers: [ListsController],
@@ -27,6 +34,7 @@ import { PublishListCreatedListener } from './listeners/publish-list-created.lis
     ListsService,
     ListGatewaySequelize,
     ListGatewayHttp,
+    // CreateListInCrmListener,
     PublishListCreatedListener,
     CreateListInCrmJob,
     {

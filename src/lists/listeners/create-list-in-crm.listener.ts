@@ -12,6 +12,7 @@ export class CreateListInCrmListener {
 
   @OnEvent('list.created')
   async handle(event: ListCreatedEvent) {
-    this.listIntegrationGateway.create(event.list);
+    console.log('process event...');
+    await this.listIntegrationGateway.create(event.list);
   }
 }

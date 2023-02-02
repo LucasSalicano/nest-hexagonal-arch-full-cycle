@@ -9,9 +9,8 @@ import { ListsService } from './lists.service';
 // import { CreateListInCrmListener } from './listeners/create-list-in-crm.listener';
 import { BullModule } from '@nestjs/bull';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PublishListCreatedListener } from './listeners/publish-list-created.listener';
+import { PublishListListener } from './listeners/publish-list.listener';
 import ListInCrmJob from './jobs/list-in-crm.job';
-import { PublishListRemovedListener } from './listeners/publish-list-removed.listener';
 
 @Module({
   imports: [
@@ -36,8 +35,7 @@ import { PublishListRemovedListener } from './listeners/publish-list-removed.lis
     ListGatewaySequelize,
     ListGatewayHttp,
     // CreateListInCrmListener,
-    PublishListCreatedListener,
-    PublishListRemovedListener,
+    PublishListListener,
     ListInCrmJob,
     {
       provide: 'ListPersistenceGateway',

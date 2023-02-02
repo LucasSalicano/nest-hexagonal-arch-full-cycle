@@ -29,6 +29,13 @@ export default class ListInCrmJob {
     await this.listIntegrationGateway.remove(event.id);
   }
 
+  @Process('list.updated')
+  async updatedList(job: Job) {
+    console.log('process updated event...');
+    const event = job.data;
+    await this.listIntegrationGateway.updated(event.list, event.list.id);
+  }
+
   @OnQueueFailed({ name: 'list.created' })
   handleError(error: Error) {
     console.log('Queue failed...');

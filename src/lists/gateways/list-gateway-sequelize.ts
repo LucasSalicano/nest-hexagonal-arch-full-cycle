@@ -36,4 +36,16 @@ export class ListGatewaySequelize implements ListGatewayInterface {
 
     await list.destroy();
   }
+
+  async updated(list: List, id: number): Promise<List> {
+    const listOld = await this.listModel.findByPk(id);
+
+    if (!list) {
+      throw new NotFoundException('List not found');
+    }
+
+    await listOld.update({ id: id, ...list });
+
+    return new List(list.name, list.id);
+  }
 }

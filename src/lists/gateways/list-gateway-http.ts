@@ -32,4 +32,14 @@ export class ListGatewayHttp implements ListGatewayInterface {
   async remove(id: number): Promise<void> {
     await lastValueFrom(this.httpService.delete(`lists/${id}`));
   }
+
+  async updated(list: List, id: number): Promise<List> {
+    const { data } = await lastValueFrom(
+      this.httpService.put(`lists/${id}`, {
+        name: list.name,
+      }),
+    );
+
+    return new List(data.name, data.id);
+  }
 }

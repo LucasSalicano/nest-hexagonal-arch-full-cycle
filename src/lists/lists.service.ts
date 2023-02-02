@@ -7,6 +7,7 @@ import { ListGatewayInterface } from './gateways/list-gateway-interface';
 import { EventEmitter } from 'events';
 import { ListCreatedEvent } from './events/list-created.event';
 import { ListRemovedEvent } from './events/list-removed.event';
+import { ListUpdatedEvent } from './events/list-updated.event';
 
 @Injectable()
 export class ListsService {
@@ -34,8 +35,12 @@ export class ListsService {
     return await this.listPersistenceGateway.findById(id);
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async update(id: number, updateListDto: UpdateListDto) {
+    const list = new List(updateListDto.name);
+    await this.listPersistenceGateway.updated(list, id);
+    list.id = id;
+    this.eventEmitter.emit('list.updated', new ListUpdatedEvent(list));
+    return list;
   }
 
   async remove(id: number) {

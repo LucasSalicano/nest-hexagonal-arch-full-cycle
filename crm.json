@@ -1,3 +1,16 @@
 {
-  "lists": []
+  "lists": [
+    {
+      "name": "NestJS Course for beginners",
+      "id": 1
+    },
+    {
+      "name": "NestJS Course for mid-level",
+      "id": 2
+    },
+    {
+      "name": "NestJS Course for beginners",
+      "id": 3
+    }
+  ]
 }

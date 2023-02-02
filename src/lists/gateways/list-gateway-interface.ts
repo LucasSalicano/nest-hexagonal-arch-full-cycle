@@ -8,4 +8,6 @@ export interface ListGatewayInterface {
   findById(id: number): Promise<List>;
 
   remove(id: number): Promise<void>;
+
+  updated(list: List, id: number): Promise<List>;
 }
